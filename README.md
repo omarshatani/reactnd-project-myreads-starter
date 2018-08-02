@@ -23,7 +23,7 @@ The user can change book's shelf by clicking on the ↓ button and selecting one
 
 To search for a book, click the + button on the bottom right of the page. 
 
-![MyReads searchpage](src/img/search.png)
+![MyReads searchpage](src/img/searchpage.png)
 
 The user can search for a book's title or author. It will be displayed up to 20 results. 
 
