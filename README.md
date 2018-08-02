@@ -3,7 +3,12 @@
 **My Reads** is a single-page web application which allows the user to manage his books. 
 
 ## How to run
-The application requires Node.js (with npm). If you don't have it on your machine, here's a link for a download: [Node.js](https://nodejs.org/en/)
+The application requires Node.js (with npm). If you don't have Node it on your machine, here's a link for a download: [Node.js](https://nodejs.org/en/)
+
+This application also uses `react-router-dom`, `sort-by` and `escape-string-regexp`.
+For more information about React Router, visit this page: [React Router](https://github.com/ReactTraining/react-router)
+For more information about Sort-By, visit this page: [sort-by](https://github.com/kvnneff/sort-by) 
+For more information about Escape Regexp, visit this page: [escape-string-regexp](https://github.com/sindresorhus/escape-string-regexp) 
 
 To run the application, follow these instructions:
 
