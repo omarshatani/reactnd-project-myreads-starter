@@ -15,22 +15,24 @@ To run the application, follow these instructions:
 The application will run on [http://localhost:3000/](http://localhost:3000/)
 
 ## Search and navigation
-MyReads allows the user to manage the state of his books, and search for new ones.
+MyReads allows the user to manage the book's shelfs, and search for new ones.
 
 ![MyReads homepage](src/img/myreads.png)
 
-User can change the state of book by clicking on ![Button](src/icons/arrow-drop-down.svg) and selecting one of the states.
+The user can change book's shelf by clicking on the ↓ button and selecting one of the shelfs. If **None** is selected, the book will be removed from the shelfs.
 
+To search for a book, click the + button on the bottom right of the page. 
 
-## Important
-The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md).
+![MyReads search](src/img/search.png)
+
+The user can search for a book's title or author. It will be displayed up to 20 results. 
+
+The application uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md).
 
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find more information on how to perform common tasks [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
-## Contributing
+## Licence
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+MIT
