@@ -16,7 +16,10 @@ The application will run on [http://localhost:3000/](http://localhost:3000/)
 
 ## Search and navigation
 MyReads allows the user to manage the state of his books, and search for new ones.
+
 ![MyReads homepage](src/img/myreads.png)
+
+User can change the state of book by clicking on ![Button](src/icons/arrow-drop-down.svg) and selecting one of the states.
 
 
 ## Important
