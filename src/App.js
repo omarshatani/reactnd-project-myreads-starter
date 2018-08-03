@@ -13,27 +13,26 @@ class BooksApp extends React.Component {
     books: [],
     searchedBooks: []
   }
-
+  //Get current books on the shelf
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
       console.log(books)
     })
   }
-
+  //Updates dynamically the search result and add it on the searchedBooks array
   updateQuery = (query) => {
     this.setState({ query })
     if (query) {
       BooksAPI.search(query)
       .then(searchedBooks => {
-        if (!searchedBooks.error)
+        if (!searchedBooks.error) {
           this.setState({ searchedBooks })
-        else
-          console.log(searchedBooks)
+        }
       })
     }
   }
-
+  //Update a books shelf when its own state changes
   updateShelf = (book, shelf) => {
     let books;
     if (this.state.books.includes(book)) {
@@ -62,10 +61,18 @@ class BooksApp extends React.Component {
     */
     if (showingBooks.length < 1)
       showingBooks = this.state.searchedBooks.filter(book => book.authors ? match.test(book.authors.toString().split(' ').join('')) : '')
-    console.log(showingBooks)
-
+    // Check if the book on the search page is on a shelf, and update its shelf
+    for (let book of showingBooks) {
+      this.state.books.map(b => {
+        if (b.id === book.id) {
+          book.shelf = b.shelf
+          return true
+        }
+        else
+          return book
+      })
+    }
     showingBooks.sort(sortBy('title'));
-
   } else {
     showingBooks = []
   }
