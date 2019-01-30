@@ -1,4 +1,5 @@
 import React from 'react'
+import * as BooksAPI from './BooksAPI'
 
 class Book extends React.Component {
 
@@ -21,12 +22,60 @@ class Book extends React.Component {
 		onUpdateBook(books, event.target.value);
 	}
 
+	addDeleteFav = (e) => {
+		const { books, onUpdateFavs } = this.props;
+		e.stopPropagation()
+		console.log(e.target)
+		console.log(books)
+		switch (e.target.className) {
+			case 'favButton deleteFav': {
+				BooksAPI.deleteFav({
+					id: books.id,
+					title: books.title,
+					authors: books.authors ? books.authors[0] : '',
+					imageLinks: books.imageLinks.thumbnail ? books.imageLinks : ''
+				})
+				.then(res => {
+					console.log(res)
+					onUpdateFavs()
+				})
+				.catch(err => console.log(err))
+			}
+				break;
+			case 'favButton addFav': {
+				BooksAPI.addFav({
+					id: books.id,
+					title: books.title,
+					authors: books.authors ? books.authors[0] : '',
+					imageLinks: books.imageLinks.thumbnail ? books.imageLinks : ''
+				})
+				.then(res => {
+					console.log(res)
+					onUpdateFavs()
+				})
+				.catch(err => console.log(err))
+			}
+			break;
+			default:;
+		}
+		
+	}
+
+	getClass = (book) => {
+		let favs = this.props.favs.filter((favBook) => favBook.title === book.title);
+		return favs.length > 0
+	}
+
 	render () {
+		if (window.location.pathname === "/favourites") {
+			console.log(this.props)
+		}
 		const { books } = this.props;
 		return (
 				<li>
 					<div className="book">
 					  <div className="book-top">
+							<div className={this.getClass(books) ? 'favButton deleteFav' : 'favButton addFav'} onClick={this.addDeleteFav}></div>
 					    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: books.imageLinks ? `url(${books.imageLinks.thumbnail})` : '' }}></div>
 					    <div className="book-shelf-changer">
 					      <select

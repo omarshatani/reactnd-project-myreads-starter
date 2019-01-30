@@ -8,18 +8,31 @@ import BooksList from './BooksList.js'
 import Book from './Book.js'
 
 class BooksApp extends React.Component {
+
   state = {
     query: '',
     books: [],
-    searchedBooks: []
+    searchedBooks: [],
+    favourites: [],
+    path: ''
   }
-  //Get current books on the shelf
-  componentDidMount() {
+
+  componentWillMount() {
+
+    //Get current favourites books
+    BooksAPI.getFav().then((favourites) => {
+      this.setState({ favourites })
+      console.log('Favourites', favourites)
+    })
+
+    //Get current books on the shelf
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
-      console.log(books)
+      console.log('Books', books)
     })
+
   }
+
   //Updates dynamically the search result and add it on the searchedBooks array
   updateQuery = (query) => {
     this.setState({ query })
@@ -49,33 +62,75 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
+  updateFav = () => {
+    console.log('Updated')
+    BooksAPI.getFav().then((favourites) => {
+      this.setState({ favourites })
+      console.log('Favourites', favourites)
+    })
+
+  }
+
   render() {
 
   let showingBooks;
-  if (this.state.query) {
-    const match = new RegExp(escapeRegExp(this.state.query.split(' ').join('')), 'i')   
-    showingBooks = this.state.searchedBooks.filter(book => match.test(book.title.split(' ').join('')))
-    /** 
-     * Case found no match in book's title
-     * Look for a match in book's authors
-    */
-    if (showingBooks.length < 1)
-      showingBooks = this.state.searchedBooks.filter(book => book.authors ? match.test(book.authors.toString().split(' ').join('')) : '')
-    // Check if the book on the search page is on a shelf, and update its shelf
-    for (let book of showingBooks) {
-      this.state.books.map(b => {
-        if (b.id === book.id) {
-          book.shelf = b.shelf
-          return true
-        }
-        else
-          return book
-      })
+
+  if (window.location.pathname === '/search') {
+    if (this.state.query) {
+      const match = new RegExp(escapeRegExp(this.state.query.split(' ').join('')), 'i')
+        showingBooks = this.state.searchedBooks.filter(book => match.test(book.title.split(' ').join('')))
+        /** 
+         * Case found no match in book's title
+         * Look for a match in book's authors
+        */
+        if (showingBooks.length < 1)
+          showingBooks = this.state.searchedBooks.filter(book => book.authors ? match.test(book.authors.toString().split(' ').join('')) : '')
+      
+      // Check if the book on the search page is on a shelf, and update its shelf
+      for (let book of showingBooks) {
+        this.state.books.map(b => {
+          if (b.id === book.id) {
+            book.shelf = b.shelf
+            return true
+          }
+          else
+            return book
+        })
+      }
+      showingBooks.sort(sortBy('title'));
+    } else {
+      showingBooks = []
     }
-    showingBooks.sort(sortBy('title'));
-  } else {
-    showingBooks = []
   }
+
+  if (window.location.pathname === '/favourites') {
+    
+    if (this.state.query) {
+      const match = new RegExp(escapeRegExp(this.state.query.split(' ').join('')), 'i')
+        showingBooks = this.state.favourites.filter(book => match.test(book.title.split(' ').join('')))
+        /** 
+         * Case found no match in book's title
+         * Look for a match in book's authors
+        */
+        if (showingBooks.length < 1)
+          showingBooks = this.state.favourites.filter(book => book.authors ? match.test(book.authors.toString().split(' ').join('')) : '')
+      
+      // Check if the book on the search page is on a shelf, and update its shelf
+      for (let book of showingBooks) {
+        this.state.books.map(b => {
+          if (b.id === book.id) {
+            book.shelf = b.shelf
+            return true
+          } else
+            return book
+        })
+      }
+        showingBooks.sort(sortBy('title'));
+      } else {
+        showingBooks = this.state.favourites;
+      }
+    }
+  
     return (
         <div className="app">
           <Route exact path="/search" render={() => (
@@ -95,7 +150,7 @@ class BooksApp extends React.Component {
                 <ol className="books-grid">
                 {
                   showingBooks.map((book) => (
-                    <Book onUpdateBook={(book, shelf) => this.updateShelf(book, shelf)} books={book} key={book.id} />
+                    <Book onUpdateFavs={() => this.updateFav()} onUpdateBook={(book, shelf) => this.updateShelf(book, shelf)} books={book} key={book.id} favs = {this.state.favourites} />
                     ))
                 }
                 </ol>
@@ -104,7 +159,32 @@ class BooksApp extends React.Component {
           )} />
 
           <Route exact path="/" render={() => (
-            <BooksList books={this.state.books} onUpdateShelfs={(book, shelf) => this.updateShelf(book, shelf)} />
+            <BooksList books={this.state.books}  onUpdateFavs={() => this.updateFav()} onUpdateShelfs={(book, shelf) => this.updateShelf(book, shelf)} favs = {this.state.favourites} />
+          )} />
+
+          <Route exact path="/favourites" render={() => (
+              <div className="search-books">
+                <div className="search-books-bar">
+                  <Link to="/" className="close-search">Close</Link>
+                  <div className="search-books-input-wrapper">
+                    <input 
+                    type="text" 
+                    placeholder="Search by title or author"
+                    value={this.state.query}
+                    onChange={(event) => this.updateQuery(event.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="search-books-results">
+                  <ol className="books-grid">
+                  {
+                    showingBooks.map((book) => (
+                      <Book onUpdateFavs={() => this.updateFav()} onUpdateBook={(book, shelf) => this.updateShelf(book, shelf)} books={book} key={book.id} favs = {this.state.favourites} />
+                      ))
+                  }
+                  </ol>
+                </div>
+            </div>
           )} />
 
         </div>

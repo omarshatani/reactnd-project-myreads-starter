@@ -6,7 +6,11 @@ class BooksList extends React.Component {
 
 	updateBook = (book, shelf) => {
 		this.props.onUpdateShelfs(book, shelf);
-	}
+  }
+  
+  updateFav = () => {
+    this.props.onUpdateFavs();
+  }
 
 	render () {
 		const { books } = this.props;
@@ -24,7 +28,7 @@ class BooksList extends React.Component {
 						{
 							books.filter((book) => book.shelf === "currentlyReading")
 							.map((book) => (
-								<Book onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} />
+								<Book onUpdateFavs={() => this.updateFav()} onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} favs = {this.props.favs} />
 							))
 						}
                     </ol>
@@ -37,7 +41,7 @@ class BooksList extends React.Component {
 						{
 							books.filter((book) => book.shelf === "wantToRead")
 							.map((book) => (
-								<Book onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} />
+								<Book onUpdateFavs={() => this.updateFav()} onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} favs = {this.props.favs} />
 							))
 						}
                     </ol>
@@ -50,7 +54,7 @@ class BooksList extends React.Component {
 						{
 							books.filter((book) => book.shelf === "read")
 							.map((book) => (
-								<Book onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} />
+								<Book onUpdateFavs={() => this.updateFav()} onUpdateBook={(book, shelf) => this.updateBook(book, shelf)} books={book} key={book.id} favs = {this.props.favs} />
 							))
 						}
                     </ol>
@@ -59,7 +63,8 @@ class BooksList extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <Link to="/search">Add a book</Link>
+              <Link to="/search" id="add" >Add a book</Link>
+              <Link to="/favourites" id="fav" >Go to favourites</Link>
             </div>
           </div>
               )

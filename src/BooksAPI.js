@@ -42,3 +42,30 @@ export const search = (query) =>
     body: JSON.stringify({ query })
   }).then(res => res.json())
     .then(data => data.books)
+
+export const getFav = () => 
+  fetch('http://localhost:4000/api/fav', {
+    method: 'GET'
+  }).then(res => res.json())
+
+export const addFav = (book) => 
+  fetch('http://localhost:4000/api/fav', {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(book)
+  }).then(res => res.json())
+
+  export const deleteFav = (book) => 
+    fetch('http://localhost:4000/api/fav', {
+      method: 'DELETE',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(book)
+    }).then(res => res.json())
+    
+
