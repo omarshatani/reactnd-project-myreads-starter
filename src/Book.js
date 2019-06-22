@@ -28,7 +28,7 @@ class Book extends React.Component {
 		console.log(e.target)
 		console.log(books)
 		switch (e.target.className) {
-			case 'favButton deleteFav': {
+			case 'favButton deleteFav': 
 				BooksAPI.deleteFav({
 					id: books.id,
 					title: books.title,
@@ -36,13 +36,11 @@ class Book extends React.Component {
 					imageLinks: books.imageLinks.thumbnail ? books.imageLinks : ''
 				})
 				.then(res => {
-					console.log(res)
 					onUpdateFavs()
 				})
 				.catch(err => console.log(err))
-			}
 				break;
-			case 'favButton addFav': {
+			case 'favButton addFav': 
 				BooksAPI.addFav({
 					id: books.id,
 					title: books.title,
@@ -50,11 +48,9 @@ class Book extends React.Component {
 					imageLinks: books.imageLinks.thumbnail ? books.imageLinks : ''
 				})
 				.then(res => {
-					console.log(res)
 					onUpdateFavs()
 				})
 				.catch(err => console.log(err))
-			}
 			break;
 			default:;
 		}

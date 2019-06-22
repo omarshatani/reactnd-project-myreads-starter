@@ -45,6 +45,7 @@ class BooksApp extends React.Component {
       })
     }
   }
+  
   //Update a books shelf when its own state changes
   updateShelf = (book, shelf) => {
     let books;
